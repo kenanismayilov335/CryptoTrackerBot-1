@@ -123,9 +123,9 @@ class CryptoTelegramBot:
                 print("ERROR")
         return graphs
 
-    def combine_vertically(self, images):
+    def get_empty_image(self, images):
         """
-        Combines images to one image vertically
+        Returns one image with a combined width of multiple images
         :param images: list
         :return: Image
         """
@@ -133,6 +133,15 @@ class CryptoTelegramBot:
         total_width = max(widths)
         max_height = sum(heights)
         new_im = Image.new('RGB', (total_width, max_height))
+        return new_im
+
+    def combine_vertically(self, images):
+        """
+        Combines images to one image vertically
+        :param images: list
+        :return: Image
+        """
+        new_im = self.get_empty_image(images)
         y_offset = 0
         for im in images:
             new_im.paste(im, (0, y_offset))
@@ -145,10 +154,7 @@ class CryptoTelegramBot:
         :param images: list
         :return: Image
         """
-        widths, heights = zip(*(i.size for i in images))
-        total_width = sum(widths)
-        max_height = max(heights)
-        new_im = Image.new('RGB', (total_width, max_height))
+        new_im = self.get_empty_image(images)
         x_offset = 0
         for im in images:
             new_im.paste(im, (x_offset, 0))
